@@ -15,5 +15,5 @@ The main component is an AppleScript file which gathers the currently playing tr
 ## File List & Descriptions
 - **ArtworkDisplayer.glet** - this geeklet displays the album artwork of the currently playing song
 - **ArtworkRunner.glet** - this geeklet runs the AppleScript file which retrieves the album artwork of the currently playing song
-- **DefaultArtwork.tiff** - this is a blank image file which is used when no music is playing
+- **Artwork.tiff** - this is a blank image file which is used when no music is playing
 - **NowPlaying.glet** - this geeklet displays the track name, artist and album name of the currently playing song

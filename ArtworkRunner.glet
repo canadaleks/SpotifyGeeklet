@@ -11,9 +11,9 @@
 	<string>osascript &lt;&lt;EOF
 (*
 Setup the various file paths for artwork
-*)set artworkFile to "/tmp/Artwork.jpeg"set artworkFileConverted to "/tmp/Artwork.tiff"set defaultArtworkFile to "~/Documents/Geektool/SpotifyNowPlaying/DefaultArtwork.tiff"(*
-Get the md5 checksum of the defaulat artwork and the initial md5 of the current artwork (should be the same at this time)
-*)set defaultmd5 to do shell script "md5 -q " &amp; defaultArtworkFileset artworkmd5 to do shell script "md5 -q " &amp; artworkFileConverted(*
+*)set artworkFile to "/tmp/Artwork.jpeg"set artworkFileConverted to "/tmp/Artwork.tiff"set defaultArtworkFile to "~/Documents/Geektool/SpotifyNowPlaying/Artwork.tiff"(*
+Get the md5 checksum of the default artwork and the initial md5 of the current artwork (should be the same at this time)
+*)set defaultmd5 to do shell script "md5 -q " &amp; defaultArtworkFiletry	set artworkmd5 to do shell script "md5 -q " &amp; artworkFileConvertedon error	set artworkmd5 to 0end tryif defaultmd5 is artworkmd5 then	do shell script "rm " &amp; artworkFileConverted	set artworkmd5 to 0end if(*
 Now for the actual work.  
 If Spotify is not open, and the default artwork md5 is not the same as the current artwork md5, load the default artwork.
 If Spotify is open and play state is not stopped, get track data.
@@ -21,7 +21,7 @@ If Spotify is open and play state is not stopped, get track data.
 		If default md5 is the same as the current artwork md5, grab the new artwork from Spotify and update the artwork.
 		If default md5 is not the same as the current artwork md5, do nothing (no re-download of artwork).
 If Spotify is open and play state is stopped, and the default md5 is not the same as the current artwork md5, load the default artwork.
-*)tell application "System Events"	set appList to name of every process	if appList does not contain "Spotify" then		if (defaultmd5 is not artworkmd5) then			do shell script "cp " &amp; defaultArtworkFile &amp; " " &amp; artworkFileConverted		else					end if			else		tell application "Spotify"			if player state is not stopped then				set currentTrack to current track				tell currentTrack					set trackName to name					set trackArtist to artist					set trackAlbum to album					set imgData to artwork url				end tell				if player state is playing then					if (defaultmd5 is artworkmd5) then						do shell script "curl -s -o " &amp; artworkFile &amp; " " &amp; imgData						do shell script "sips -s format tiff " &amp; artworkFile &amp; " --out " &amp; artworkFileConverted						do shell script "rm " &amp; artworkFile					else											end if				else					if (defaultmd5 is not artworkmd5) then						do shell script "cp " &amp; defaultArtworkFile &amp; " " &amp; artworkFileConverted					else											end if				end if			else				if (defaultmd5 is not artworkmd5) then					do shell script "cp " &amp; defaultArtworkFile &amp; " " &amp; artworkFileConverted				else									end if			end if		end tell	end ifend tell
+*)tell application "System Events"	set appList to name of every process	if appList does not contain "Spotify" then		if (defaultmd5 is not artworkmd5) then			do shell script "cp " &amp; defaultArtworkFile &amp; " " &amp; artworkFileConverted			return		else					end if			else		tell application "Spotify"			if player state is playing then				set currentTrack to current track				tell currentTrack					set trackName to name					set trackArtist to artist					set trackAlbum to album					set imgData to artwork url				end tell				if (defaultmd5 is not artworkmd5) then					do shell script "curl -s -o " &amp; artworkFile &amp; " " &amp; imgData					do shell script "sips -s format tiff \"" &amp; artworkFile &amp; "\" --out \"" &amp; artworkFileConverted &amp; "\""					do shell script "rm " &amp; artworkFile				else					return				end if			else				if (defaultmd5 is not artworkmd5) then					do shell script "cp " &amp; defaultArtworkFile &amp; " " &amp; artworkFileConverted				else					return				end if			end if		end tell	end ifend tell
 EOF</string>
 	<key>DisplayID</key>
 	<integer>2077749245</integer>
