@@ -2,7 +2,7 @@
 Geeklets to show the Title, Artist, Album &amp; Album Artwork of the currently playing track in Spotify.
 
 ## How it Works
-The main component is an AppleScript file which gathers the currently playing track information and downloads the album artwork image to the /tmp directory.  Once downloaded, the downloaded image (JPEG) is converted to TIFF and the originsl JPEG is deleted.  This is done so that when music is not playing, a "default" artwork, which is a blank TIFF file, is copied to the /tmp directory so the album artwork clears on the desktop.
+The main component is an AppleScript file which gathers the currently playing track information and downloads the album artwork image to the /tmp directory.  Once downloaded, the downloaded image (JPEG) is converted to TIFF and the original JPEG is deleted.  This is done so that when music is not playing, a "default" artwork, which is a blank TIFF file, is copied to the /tmp directory so the album artwork clears on the desktop.
 
 ## Installation Instructions
 1. Click the **Clone or download** button and select **Download ZIP**
