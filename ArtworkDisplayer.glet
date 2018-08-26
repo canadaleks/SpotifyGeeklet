@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Alignment</key>
+	<integer>8</integer>
+	<key>DisplayID</key>
+	<integer>2077749245</integer>
+	<key>GeekletFrame</key>
+	<string>{{1382.74609375, 914.234375}, {101, 108}}</string>
+	<key>HasShadow</key>
+	<true/>
+	<key>Identifier</key>
+	<string>org.tynsoe.geeklet.image</string>
+	<key>ImageURL</key>
+	<string>file:///tmp/Artwork.tiff</string>
+	<key>Name</key>
+	<string>TrackArtwork</string>
+	<key>RefreshInterval</key>
+	<integer>1</integer>
+</dict>
+</plist>
