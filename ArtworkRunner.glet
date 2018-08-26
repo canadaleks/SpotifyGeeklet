@@ -9,37 +9,19 @@
 	</data>
 	<key>Command</key>
 	<string>osascript &lt;&lt;EOF
-set artworkPath to "/tmp/Artwork.jpeg"
-set artworkPathConvert to "/tmp/Artwork.tiff"
-set defaultArtworkPath to "~/Documents/Geektool/SpotifyNowPlaying/DefaultArtwork.tiff"
-tell application "System Events"
-set appList to name of every process
-if appList does not contain "Spotify" then
-	do shell script "cp " &amp; defaultArtworkPath &amp; " " &amp; artworkPathConvert
-else
-	tell application "Spotify"
-	if player state is not stopped then
-		set currentTrack to current track
-		tell currentTrack
-			set trackName to name
-			set trackArtist to artist
-			set trackAlbum to album
-			set imgData to artwork url
-		end tell
-		if player state is playing then
-			do shell script "curl -s -o " &amp; artworkPath &amp; " " &amp; imgData
-			do shell script "sips -s format tiff " &amp; artworkPath &amp; " --out " &amp; artworkPathConvert
-			do shell script "rm " &amp; artworkPath
-		else
-			do shell script "cp " &amp; defaultArtworkPath &amp; " " &amp; artworkPathConvert
-		end if
-		else
-			do shell script "cp " &amp; defaultArtworkPath &amp; " " &amp; artworkPathConvert
-		end if
-		end tell
-	end if
-end tell
-EOF</string>
+(*
+Setup the various file paths for artwork and ID tracking
+*)set artworkFile to "/tmp/Artwork.jpeg"set artworkFileConverted to "/tmp/Artwork.tiff"set defaultArtworkFile to "~/Documents/Geektool/SpotifyNowPlaying/DefaultArtwork.tiff"set idFile to "/tmp/trackId.txt"(*Attempt to open the idFile (file which keeps track of the Spotify track ID currently/last played).  In the event the file doesn't exist, create a new idFile with "BANANA" in it (to prevent End of File error due to empty file).*)try	open for access idFileon error	do shell script "touch " &amp; idFile	do shell script "echo \"BANANA\" &gt;&gt; " &amp; idFileend try(*
+Read the contents of the idFile into oldID variable
+*)set oldID to do shell script "cat " &amp; idFile(*
+Now for the actual work.  
+If Spotify is not open, use the blank artwork.
+If Spotify is open and play state is not stopped, get track data.
+	Then, is player state is playing, check to see if the oldID is the same as the current trackID.
+		If oldID is not the same as the current trackID, grab the new artwork from Spotify and update the idFile.
+		If oldID is the same as the current trackID, do nothing (no re-download of artwork).
+If Spotify is open and play state is stopped, use the blank artwork.
+*)tell application "System Events"	set appList to name of every process	if appList does not contain "Spotify" then		do shell script "cp " &amp; defaultArtworkFile &amp; " " &amp; artworkFileConverted	else		tell application "Spotify"			if player state is not stopped then				set currentTrack to current track				tell currentTrack					set trackName to name					set trackArtist to artist					set trackAlbum to album					set imgData to artwork url					set trackID to id as text				end tell				if player state is playing then					if (oldID is not trackID) then						do shell script "curl -s -o " &amp; artworkFile &amp; " " &amp; imgData						do shell script "sips -s format tiff " &amp; artworkFile &amp; " --out " &amp; artworkFileConverted						do shell script "rm " &amp; artworkFile						do shell script "echo " &amp; trackID &amp; " &gt; " &amp; idFile						get oldID					else											end if				else					do shell script "cp " &amp; defaultArtworkFile &amp; " " &amp; artworkFileConverted				end if			else				do shell script "cp " &amp; defaultArtworkFile &amp; " " &amp; artworkFileConverted			end if		end tell	end ifend tellEOF</string>
 	<key>DisplayID</key>
 	<integer>2077749245</integer>
 	<key>DisplayStatusImage</key>
@@ -142,7 +124,7 @@ EOF</string>
 	<key>FontSize</key>
 	<real>10</real>
 	<key>GeekletFrame</key>
-	<string>{{109, 34}, {95, 45}}</string>
+	<string>{{1572, 38}, {95, 45}}</string>
 	<key>HasShadow</key>
 	<false/>
 	<key>Identifier</key>
@@ -247,7 +229,7 @@ EOF</string>
 	<key>TextColor</key>
 	<data>
 	BAtzdHJlYW10eXBlZIHoA4QBQISEhAdOU0NvbG9yAISECE5TT2JqZWN0AIWEAWMBhARm
-	ZmZmAAAAAYY=
+	ZmZmAAAAAIY=
 	</data>
 	<key>TextStrikethrough</key>
 	<integer>0</integer>
