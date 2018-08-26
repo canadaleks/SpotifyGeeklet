@@ -8,11 +8,44 @@
 	ZgAAhg==
 	</data>
 	<key>Command</key>
-	<string>osascript ~/Documents/Geektool/SpotifyNowPlaying/SpotifyNowPlaying.scpt -id</string>
+	<string>osascript &lt;&lt;EOF
+set artworkPath to "/tmp/Artwork.jpeg"
+set artworkPathConvert to "/tmp/Artwork.tiff"
+set defaultArtworkPath to "~/Documents/Geektool/SpotifyNowPlaying/DefaultArtwork.tiff"
+tell application "System Events"
+set appList to name of every process
+if appList does not contain "Spotify" then
+	do shell script "cp " &amp; defaultArtworkPath &amp; " " &amp; artworkPathConvert
+else
+	tell application "Spotify"
+	if player state is not stopped then
+		set currentTrack to current track
+		tell currentTrack
+			set trackName to name
+			set trackArtist to artist
+			set trackAlbum to album
+			set imgData to artwork url
+		end tell
+		if player state is playing then
+			do shell script "curl -s -o " &amp; artworkPath &amp; " " &amp; imgData
+			do shell script "sips -s format tiff " &amp; artworkPath &amp; " --out " &amp; artworkPathConvert
+			do shell script "rm " &amp; artworkPath
+		else
+			do shell script "cp " &amp; defaultArtworkPath &amp; " " &amp; artworkPathConvert
+		end if
+		else
+			do shell script "cp " &amp; defaultArtworkPath &amp; " " &amp; artworkPathConvert
+		end if
+		end tell
+	end if
+end tell
+EOF</string>
 	<key>DisplayID</key>
 	<integer>2077749245</integer>
+	<key>DisplayStatusImage</key>
+	<false/>
 	<key>DoesOverrideText</key>
-	<true/>
+	<false/>
 	<key>DropShadow</key>
 	<false/>
 	<key>FailureImage</key>
