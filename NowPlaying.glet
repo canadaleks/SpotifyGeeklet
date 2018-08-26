@@ -4,25 +4,25 @@
 <dict>
 	<key>Command</key>
 	<string>DATA=$(osascript -e 'tell application "System Events"
-    set myList to (name of every process)
+set myList to (name of every process)
 end tell
 if myList contains "Spotify" then
-    tell application "Spotify"
-    if player state is stopped then
-    set output to "Stopped"
-    else
-    set trackname to name of current track
-    set artistname to artist of current track
-    set albumname to album of current track
-    if player state is playing then
-    set output to trackname &amp; " 🎵" &amp; "new_line" &amp; artistname &amp; " 🎙" &amp; "new_line" &amp; albumname &amp; " 💿" &amp; "new_line"
-    else if player state is paused then
-    set output to ""
-    end if
-    end if
-    end tell
+	tell application "Spotify"
+	if player state is stopped then
+		set output to ""
+	else
+		set trackname to name of current track
+		set artistname to artist of current track
+		set albumname to album of current track
+		if player state is playing then
+			set output to trackname &amp; " 🎵" &amp; "new_line" &amp; artistname &amp; " 🎙" &amp; "new_line" &amp; albumname &amp; " 💿" &amp; "new_line"
+		else if player state is paused then
+			set output to ""
+		end if
+	end if
+	end tell
 else
-    set output to ""
+	set output to ""
 end if')
 echo $DATA | awk -F new_line '{print $1}'
 echo $DATA | awk -F new_line '{print $2}'
@@ -79,7 +79,7 @@ echo $DATA | awk -F new_line '{print $3}'</string>
 	<key>ForceCR</key>
 	<true/>
 	<key>GeekletFrame</key>
-	<string>{{668, 940.6328125}, {700, 68}}</string>
+	<string>{{610, 951}, {700, 68}}</string>
 	<key>HasShadow</key>
 	<false/>
 	<key>Identifier</key>
@@ -87,7 +87,7 @@ echo $DATA | awk -F new_line '{print $3}'</string>
 	<key>Name</key>
 	<string>Spotify</string>
 	<key>RefreshInterval</key>
-	<integer>2</integer>
+	<integer>1</integer>
 	<key>SetLocale</key>
 	<true/>
 	<key>StatusImagePosition</key>
